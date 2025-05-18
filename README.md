@@ -126,7 +126,3 @@ For production deployment, additional configuration is recommended:
    npm run build  # Or yarn build
    ```
 4. Serve the backend using a production ASGI server like Uvicorn with Gunicorn
-
-## License
-
-MIT 
