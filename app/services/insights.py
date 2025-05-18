@@ -5,6 +5,7 @@ import asyncio
 from openai import AsyncOpenAI
 from app.core.config import settings
 from app.models.schema import KeyInsight, KeyInsightsResponse
+from app.utils.decorators import track_token_usage
 
 
 dotenv.load_dotenv()
@@ -29,6 +30,7 @@ def save_insights_json(insights: KeyInsightsResponse, filename: str) -> str:
     
     return json_filename
 
+@track_token_usage("get_insights")
 async def get_key_insights(text: str, filename: str) -> KeyInsightsResponse:
     """
     Get key insights from text using OpenAI and save to JSON.
@@ -76,6 +78,7 @@ async def get_key_insights(text: str, filename: str) -> KeyInsightsResponse:
         return KeyInsightsResponse(insights=[], error=str(e)) 
     
     
+@track_token_usage("update_insights")
 async def update_key_insights(text: str, filename: str, suggested_changes: str) -> KeyInsightsResponse:
     """
     Update insights based on suggested changes.
