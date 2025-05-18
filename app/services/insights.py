@@ -14,9 +14,24 @@ API_KEY = dotenv.get_key(".env", "OPENAI_API_KEY")
 
 client = AsyncOpenAI(api_key=API_KEY) 
 
-async def get_key_insights(text: str) -> KeyInsightsResponse:
+def save_insights_json(insights: KeyInsightsResponse, filename: str) -> str:
+    """Save insights to a JSON file."""
+    # Create uploads directory if it doesn't exist
+    os.makedirs("uploads", exist_ok=True)
+    
+    # Generate JSON filename
+    json_filename = f"uploads/{filename}.json"
+    
+    # Convert to dict and save
+    insights_dict = insights.model_dump()
+    with open(json_filename, "w", encoding="utf-8") as f:
+        json.dump(insights_dict, f, indent=2)
+    
+    return json_filename
+
+async def get_key_insights(text: str, filename: str) -> KeyInsightsResponse:
     """
-    Get key insights from text using OpenAI.
+    Get key insights from text using OpenAI and save to JSON.
     """
     try:
         response = await client.chat.completions.create(
@@ -41,13 +56,67 @@ async def get_key_insights(text: str) -> KeyInsightsResponse:
         
         insights_data = json.loads(response.choices[0].message.content)
         
+       
+        
+        
         # Convert the response to our schema format
         insights = [
             KeyInsight(category=category, content=content)
             for category, content in insights_data.items()
         ]
         
-        return KeyInsightsResponse(insights=insights, error=None)
+        insights_response = KeyInsightsResponse(insights=insights, error=None)
+        
+        # Save to JSON file
+        save_insights_json(insights_response, filename)
+        
+        return insights_response
+        
+    except Exception as e:
+        return KeyInsightsResponse(insights=[], error=str(e)) 
+    
+    
+async def update_key_insights(text: str, filename: str, suggested_changes: str) -> KeyInsightsResponse:
+    """
+    Update insights based on suggested changes.
+    """
+    try:
+        response = await client.chat.completions.create(
+            model="gpt-3.5-turbo",
+            messages=[
+                {
+                    "role": "system",
+                    "content": """You are an AI assistant that helps improve text analysis. 
+                    Given the original text and suggested changes, provide updated insights in the following categories:
+                    1. Summary - A brief overview of the main content
+                    2. Key Points - Important points or findings
+                    3. Action Items - Any tasks, recommendations, or next steps
+                    
+                    Consider the suggested changes while analyzing the text.
+                    Format the response as a JSON object with categories as keys and arrays of insights as values."""
+                },
+                {
+                    "role": "user",
+                    "content": f"Original text:\n{text}\n\nSuggested changes:\n{suggested_changes}"
+                }
+            ],
+            response_format={"type": "json_object"}
+        )
+        
+        insights_data = json.loads(response.choices[0].message.content)
+        
+        # Convert the response to our schema format
+        insights = [
+            KeyInsight(category=category, content=content)
+            for category, content in insights_data.items()
+        ]
+        
+        insights_response = KeyInsightsResponse(insights=insights, error=None)
+        
+        # Save to JSON file (overwriting the old one)
+        save_insights_json(insights_response, filename)
+        
+        return insights_response
         
     except Exception as e:
         return KeyInsightsResponse(insights=[], error=str(e)) 

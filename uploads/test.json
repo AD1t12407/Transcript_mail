@@ -1,0 +1,23 @@
+{
+  "insights": [
+    {
+      "category": "Summary",
+      "content": [
+        "The text is a test document that contains important information about testing."
+      ]
+    },
+    {
+      "category": "Key Points",
+      "content": [
+        "The document focuses on the topic of testing.",
+        "It likely includes details on different types of testing, testing techniques, or the importance of testing.",
+        "Testing is essential in various fields such as software development, quality assurance, and research."
+      ]
+    },
+    {
+      "category": "Action Items",
+      "content": []
+    }
+  ],
+  "error": null
+}
