@@ -1,1 +1,79 @@
+# Environment variables
 .env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# Frontend
+## Dependencies
+/Frontend/node_modules
+/Frontend/.pnp
+/Frontend/.pnp.js
+
+## Testing
+/Frontend/coverage
+
+## Production
+/Frontend/build
+/Frontend/dist
+
+## Misc
+/Frontend/.DS_Store
+/Frontend/.env.local
+/Frontend/.env.development.local
+/Frontend/.env.test.local
+/Frontend/.env.production.local
+/Frontend/.bolt
+
+## Logs
+/Frontend/npm-debug.log*
+/Frontend/yarn-debug.log*
+/Frontend/yarn-error.log*
+
+# Backend
+## Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+
+## Virtual Environment
+/Backend/venv/
+/Backend/venv-pdf2mail/
+.Python
+/Backend/env/
+/Backend/.env
+
+## Distribution / packaging
+/Backend/dist/
+/Backend/build/
+/Backend/*.egg-info/
+/Backend/.eggs/
+
+## Unit test / coverage reports
+/Backend/htmlcov/
+/Backend/.tox/
+/Backend/.coverage
+/Backend/.coverage.*
+/Backend/.cache
+/Backend/nosetests.xml
+/Backend/coverage.xml
+/Backend/*.cover
+
+## Logs
+/Backend/logs/
+*.log
+
+## Uploads and temporary files
+/Backend/uploads/*
+!/Backend/uploads/.gitkeep
+
+# IDE specific files
+.idea/
+.vscode/
+*.swp
+*.swo
+.DS_Store
+Thumbs.db
+
