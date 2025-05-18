@@ -14,4 +14,12 @@ class KeyInsight(BaseModel):
 
 class KeyInsightsResponse(BaseModel):
     insights: List[KeyInsight] = Field(..., description="List of categorized insights")
+    error: Optional[str] = Field(None, description="Error message if processing failed")
+
+class MailDraftResponse(BaseModel):
+    subject: str = Field(..., description="Email subject line")
+    greeting: str = Field(..., description="Opening greeting")
+    body: str = Field(..., description="Main content of the email")
+    closing: str = Field(..., description="Closing line")
+    signature: str = Field(..., description="Professional signature")
     error: Optional[str] = Field(None, description="Error message if processing failed") 

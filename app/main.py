@@ -1,6 +1,6 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-from app.api import upload, insights
+from app.api import upload, insights, mail_draft
 
 app = FastAPI(
     title="Transcript Processor",
@@ -19,4 +19,5 @@ app.add_middleware(
 
 # Include routers
 app.include_router(upload.router, prefix="/api", tags=["upload"])
-app.include_router(insights.router, prefix="/api", tags=["insights"]) 
+app.include_router(insights.router, prefix="/api", tags=["insights"])
+app.include_router(mail_draft.router, prefix="/api", tags=["mail"]) 
